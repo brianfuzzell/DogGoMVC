@@ -31,9 +31,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
