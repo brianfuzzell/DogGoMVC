@@ -22,6 +22,8 @@ public class DogGoDbContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         // seed data with campsite types
         modelBuilder.Entity<Neighborhood>().HasData(new Neighborhood[]
         {
