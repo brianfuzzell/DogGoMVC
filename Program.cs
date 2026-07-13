@@ -1,7 +1,8 @@
-using DogGo.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using DogGo.Models;
+using DogGo.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,13 +35,5 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
 
 app.Run();
