@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DogGo.Data;
 using DogGo.Models;
+using DogGo.Models.ViewModels;
 
 namespace DogGo.Controllers
+
 {
     public class OwnersController : Controller
     {
@@ -40,18 +42,38 @@ namespace DogGo.Controllers
                 .Include(o => o.Dogs)
                 .Include(o => o.Neighborhood)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (owner == null)
             {
                 return NotFound();
             }
 
-            return View(owner);
+            var walkers = await _context.Walkers
+                .Where(w => w.NeighborhoodId == owner.NeighborhoodId)
+                .ToListAsync();
+
+            ProfileViewModel vm = new ProfileViewModel()
+            {
+                Owner = owner,
+                Dogs = owner.Dogs.ToList(),
+                Walkers = walkers
+            };
+
+            return View(vm);
         }
 
         // GET: Owners/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var neighborhoods = await _context.Neighborhoods.ToListAsync();
+            
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = new Owner(),
+                Neighborhoods = neighborhoods
+            };
+            
+            return View(vm);
         }
 
         // POST: Owners/Create
